@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+
+{% block title %} 
+Notice 
+{% endblock %}
+
+{% block content %}
+
+<h1>{{notice.title}}</h1>
+<br>
+<p>Created: {{notice.created_at}}  
+   Updated: {{notice.updated_at}}
+</p>
+
+<br>
+<br>
+{{notice.notice}}
+{% endblock %}

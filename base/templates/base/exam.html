@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+
+
+{% block title %} 
+Exam
+{% endblock %}
+
+{% block content %} 
+
+<h1> Exams </h1>
+{% comment %} 
+<ul>
+{% for qsn in questions %}
+<br>
+<li><b>Q.</b> {{ qsn.question }} </li>
+{% for option in qsn.options|get_options %}
+<label>
+    <input type="radio" name="option" value="{{ option }}">
+    {{ option }}
+  </label>
+{% endfor %}
+
+<li> {{ qsn.level|get_level }} </li>
+
+
+{% endfor %} {% endcomment %}
+
+<form method="post" action="{% url 'calculate_marks' %}">
+    {% csrf_token %}
+    {% for question in questions %}
+      <div>
+        <p><b>Q.</b>{{ question.question }}?</p>
+        {% for option in question.options|get_options %}
+          <label>
+            <input type="radio" name="answer{{ question.id }}" value="{{ option }}">
+            {{ option }}
+          </label>
+        {% endfor %}
+      </div>
+    {% endfor %}
+    <button type="submit">Submit</button>
+  </form>
+
+{% endblock %}

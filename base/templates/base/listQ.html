@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+
+{% block title %} 
+Questionnaire
+{% endblock %}
+
+{% block content %} 
+
+        {% comment %} {% for question in questions %}
+           Q{{question.id}}.> {{question.qn}}  
+            <br>
+            =>> It's answer is : {{question.correct}}  
+            <br>
+            <br>
+        {% endfor %} {% endcomment %}
+        
+        {% for question in questions %}
+        <div>
+          <p><b>Q.</b>{{ question.question }}?</p>
+          <p><b>Ans.</b>{{ question.correct }}</p>
+          {% for option in question.options|get_options %}
+            <label>
+              <li>
+              {{ option }}
+              </li>
+            </label>
+          {% endfor %}
+{% endfor %}
+
+{% endblock %}

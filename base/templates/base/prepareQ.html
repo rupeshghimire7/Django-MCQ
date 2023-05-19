@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+
+
+{% block title %} 
+Prepare Question
+{% endblock %}
+
+{% block content %} 
+
+<form method="POST" action="{% url 'prepare' %}">
+    {% csrf_token %}
+    <label>Question:</label>
+    <input class="input-box" name="question" placeholder="Enter Question.">
+    <br>
+
+    {{form.as_p}}
+
+    <label>Option 1:</label>
+    <input class="input-box" name="option1" placeholder="ENTER CORRECT ANSWER HERE">
+    <br>
+
+    <label>Option 2:</label>
+    <input class="input-box" name="option2" placeholder="Enter an option">
+    <br>
+
+    <label>Option 3:</label>
+    <input class="input-box" name="option3" placeholder="Enter an option">
+    <br>
+
+    <label>Option 4:</label>
+    <input class="input-box" name="option4" placeholder="Enter an option">
+    <br>
+
+    
+    <br>
+
+
+    <label>Submit:</label>
+    <input type="submit">
+    <br>
+
+</form>
+
+
+
+
+{% endblock %}
