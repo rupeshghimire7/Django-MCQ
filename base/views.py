@@ -6,8 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import json
 import random
-# from faker import Faker
-# faker = Faker()
+from faker import Faker
+faker = Faker()
 
 
 
