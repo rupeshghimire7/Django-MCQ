@@ -27,16 +27,22 @@ def loginPage(request):
 
         try:
             user = User.objects.get(email=email)
+            print(user)
         except:
+            print('except')
             messages.error(request, 'User does not exist!')
 
         user = authenticate(request, email=email, password=password)
+        print("Authenticated user",user)
 
         if user is not None:
             login(request, user)
-            return redirect('home')
+            print("Logged in")
+            return redirect('homepage')
+        
         else:
             messages.error(request, 'Username OR Password does not match!')
+            print("Else")
 
     context = {'page': page}
     return render(request, 'base/login_register.html', context)
@@ -71,7 +77,7 @@ Landing Page
 """
 def home(request):
     user = request.user
-    return render(request, 'exams/home.html',{'user':user})
+    return render(request, 'base/home.html',{'user':user})
 
 
 
@@ -101,7 +107,7 @@ def makeQuestion(request):
         messages.error(request, 'You cannot Access this page!')
         return  redirect('homepage')        
 
-    return render(request, 'exams/prepareQ.html')
+    return render(request, 'base/prepareQ.html')
 
 
 
@@ -114,7 +120,7 @@ def listQuestion(request):
     if request.user.is_staff:
         questions = Question.objects.all()
         jsonDec = json.decoder.JSONDecoder()
-        return render(request,'exams/listQ.html',{'questions':questions})
+        return render(request,'base/listQ.html',{'questions':questions})
     else:
         messages.error(request, 'You cannot Access this page!')
         return  redirect('homepage')
@@ -179,5 +185,54 @@ def calculate_marks(request):
             else:
                 if answer == question.correct:
                     total_marks += 3
-        return render(request, 'exams/result.html', {'total_marks': total_marks})
-    return render(request, 'exams/exam.html', {'questions': questions})
+        return render(request, 'base/result.html', {'total_marks': total_marks})
+    return render(request, 'base/exam.html', {'questions': questions})
+
+
+
+
+
+"""
+Displaying Question Paper
+"""
+def examquestion(request):
+    user = request.user
+    if user.is_authenticated: # and user.is_student==False
+        easy = Question.objects.filter(level='E').order_by('?')[:25]
+        medium = Question.objects.filter(level='M').order_by('?')[:15]
+        hard = Question.objects.filter(level='H').order_by('?')[:10]
+
+        allQuestions = easy | medium | hard
+    else:
+        return redirect('studentlogin')
+
+    return render(request,'base/exam.html',{'questions':allQuestions})
+
+
+
+
+
+"""
+NoticeBoard and Notice
+"""
+
+def noticeboard(request):
+    user = request.user
+    notices = NoticeBoard.objects.all()
+
+    form = NoticeForm()
+    if request.method == 'POST':
+        form = NoticeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('notice')
+    else:
+        form = NoticeForm()
+    context = {'notices':notices, 'user':user, 'form':form}
+    return render(request,'base/notices.html',context)
+
+
+
+def notice(request,id):
+    notice = NoticeBoard.objects.get(id=id)
+    return render(request,'base/notice.html', {'notice':notice})

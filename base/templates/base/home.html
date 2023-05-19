@@ -20,12 +20,12 @@
 	</a>
 
 
-	<a
+	{% comment %} <a
 		href="{% url 'fakequestion' %}"
 		class="w-64 h-64 bg-gray-300 rounded-lg flex justify-center items-center hover:bg-gray-400 duration-300 ease-in-out"
 	>
 		<span class="text-3xl font-bold text-center">Fake Question</span>
-	</a>
+	</a> {% endcomment %}
 
 	<a
 		href="{% url 'examquestion' %}"
@@ -35,12 +35,18 @@
 	</a>
 
 	<a
-	href="{% url 'studentlogout' %}"
+	href="{% url 'logout' %}"
 	class="w-64 h-64 bg-gray-300 rounded-lg flex justify-center items-center hover:bg-gray-400 duration-300 ease-in-out"
 	>
 		<span class="text-3xl font-bold text-center">Logout</span>
 	</a>
 
+	<a
+	href="{% url 'notice' %}"
+	class="w-64 h-64 bg-gray-300 rounded-lg flex justify-center items-center hover:bg-gray-400 duration-300 ease-in-out"
+	>
+		<span class="text-3xl font-bold text-center">Notice Board</span>
+	</a>
 
 	{% elif user.is_authenticated %}
 
@@ -52,18 +58,12 @@
 	</a>
 
 	<a
-	href="{% url 'studentlogout' %}"
+	href="{% url 'logout' %}"
 	class="w-64 h-64 bg-gray-300 rounded-lg flex justify-center items-center hover:bg-gray-400 duration-300 ease-in-out"
 	>
 		<span class="text-3xl font-bold text-center">Logout</span>
 	</a>
 
-	<a
-	href="{% url 'studentlogout' %}"
-	class="w-64 h-64 bg-gray-300 rounded-lg flex justify-center items-center hover:bg-gray-400 duration-300 ease-in-out"
-	>
-		<span class="text-3xl font-bold text-center">Logout</span>
-	</a>
 
 	<a
 		href="{% url 'examquestion' %}"
@@ -76,7 +76,7 @@
 	{% else %}
 
 	<a
-	href="{% url 'studentlogin' %}"
+	href="{% url 'login' %}"
 	class="w-64 h-64 bg-gray-300 rounded-lg flex justify-center items-center hover:bg-gray-400 duration-300 ease-in-out"
 	>
 	<span class="text-3xl font-bold text-center">Login</span>
