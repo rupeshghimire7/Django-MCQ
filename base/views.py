@@ -138,10 +138,10 @@ def listQuestion(request):
 # """
 # def make_100_question():
     
-#     for i in range(100):
-#         qn_form = faker.sentence()
-#         opt1 = faker.word()
-#         opt2 = faker.word()
+    # for i in range(100):
+    #     qn_form = faker.sentence()
+    #     opt1 = faker.word()
+    #     opt2 = faker.word()
 #         opt3 = faker.word()
 #         opt4 = faker.word()
 #         level = random.choice(['E','M','H'])
