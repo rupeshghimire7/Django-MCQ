@@ -21,4 +21,23 @@
 </div>
 {% comment %} <h1>Your marks: {{ total_marks }}</h1> {% endcomment %}
 
+<table>
+    <tr>
+      <th>Question</th>
+      <th>Chosen</th>
+      <th>Correct</th>
+    </tr>
+    {% for question,answer in QnA.items %}
+    <tr>
+        <td>{{ question }}</td>
+        {% if answer == question.correct %}
+        <td style="color:green;">{{ answer}}</td>
+        {% else %}
+            <td style="color:red;">{{ answer}}</td>
+        {% endif %}
+        <td>{{ question.correct }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  
 {% endblock %}
