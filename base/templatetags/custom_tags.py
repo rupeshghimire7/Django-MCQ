@@ -38,3 +38,10 @@ def get_remarks(value):
         
         return value[0]
         
+
+@register.filter(name='get_availability')
+def get_availability(value):
+    if value==True:
+        return "Available"
+    else:
+        return "Not Available"

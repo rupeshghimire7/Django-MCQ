@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load custom_tags %}
 
 {% comment %} 
 
@@ -26,28 +26,25 @@ Subject 2                       Not Available
 
 
 {% block content %}
-        {% if user.is_staff %}
-        {{forms.as_p}}
-        {% elif user.is_authenticated %}
+    <h1>All Exams</h1>
+        {% if user.is_authenticated %}
         <table>
             <tr>
                 <th>Subject</th>
                 <th>Exam Availability</th>
-                <th>Exam Date</th>
                 <th>Link</th>
             </tr>
-            {% for subject,value in subjects %}
+            {% for subject in subjects %}
             <tr>
                 <td>{{subject.subject}}</td>
-                <td>{{subject.availability}}</td>
+                <td>{{subject.availability|get_availability }}</td>
                 {% if subject.availability %}
-                <td>{{value|get_date}}</td>
-                <td><a href="{% url 'exam' %}">Link</a></td>
+                <td><a href="{% url 'examquestion' %}">Link</a></td>
                 {% else %}
-                <td>-</td>
                 <td>-</td>
                 {% endif %}
             </tr>
             {% endfor %}
         </table
+        {% endif %}
 {% endblock %}

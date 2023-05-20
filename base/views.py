@@ -139,7 +139,7 @@ def listQuestion(request):
 # def make_100_question():
     
     # for i in range(100):
-    #     qn_form = faker.sentence()
+    #     qn_form = faker.sentence() + "Subject2" 
     #     opt1 = faker.word()
     #     opt2 = faker.word()
 #         opt3 = faker.word()
@@ -148,7 +148,7 @@ def listQuestion(request):
 
 #         correct_form = opt1
 #         option = [opt1, opt2, opt3, opt4]
-#         subject=Subject.objects.get(id=1)
+#         subject=Subject.objects.get(id=2)
 #         print(qn_form,opt1,opt2,opt3,opt4,option,correct_form,subject,level,"/n")
 
 #         q = Question.objects.create(question=qn_form, correct = correct_form, level=level, options = json.dumps(option),subject=subject)
@@ -173,19 +173,22 @@ Subject Adding/Selection
 """
 def checkExam(request):
     user = request.user
-    form = None
     if user.is_authenticated:
-        if user.is_staff:
-            form = SubjectForm()
-            if request.method == 'POST':
-                form = SubjectForm(request.POST)
-                if form.is_valid():
-                    subject = form.save(commit=False)
-                    subject.save()
-                    return redirect('checkExam')
-                
         subjects = Subject.objects.all()
-        return render(request,'base/checkExams.html',{'subjects':subjects,'form':form,'user':user})
+        print(subjects)
+        data = {}
+        for subject in subjects:
+            if Question.objects.filter(subject=subject).exists():
+                easycount = Question.objects.filter(subject=subject,level='E').count()
+                mediumcount = Question.objects.filter(subject=subject,level='M').count()
+                hardcount = Question.objects.filter(subject=subject,level='H').count()
+                if easycount>=10 and mediumcount>=5 and hardcount>=5:
+                    subject.availability = True
+                    subject.save()
+
+        subjects = Subject.objects.all()
+        print([subject.availability for subject in subjects])
+        return render(request,'base/checkExams.html',{'subjects':subjects})
     
     else:
         return redirect('studentlogin')
