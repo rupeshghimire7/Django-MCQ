@@ -33,13 +33,18 @@
 <br>
 	{% if user.is_staff %}
 	<h1 class="uppercase text-2xl font-semibold my-2">Add a notice:</h1>
-	<form action="" method="POST" class="mt-4 border border-gray-300 rounded p-4 flex flex-col gap-2 w-96">
-		{% csrf_token %}
-	
-		{{form.as_p}}
-		<br>
-		<button type="submit" class="bg-green-500 py-1 w-24 mx-auto text-white rounded-md hover:bg-green-600">Submit</button>
-	</form>
+	<div class="flex justify-center">
+		<form action="" method="POST" class="mt-4 border border-gray-300 rounded p-4 w-96">
+		  {% csrf_token %}
+		  {% for field in form %}
+		  <div class="mb-4">
+			<label for="{{ field.id_for_label }}" class="block">{{ field.label }}</label>
+			{{ field }}
+		  </div>
+		  {% endfor %}
+		  <button type="submit" class="bg-green-500 py-1 w-24 mx-auto text-white rounded-md hover:bg-green-600">Update</button>
+		</form>
+	  </div>
 	{% endif %}
 </main>
 

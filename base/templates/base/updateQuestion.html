@@ -1,5 +1,31 @@
+ {% extends 'base.html' %}
+ {% block title %}Update Question{% endblock title %}
+
+
+{% comment %} 
+{% block content %}
 <form action="" method="POST">
     {% csrf_token %}
     {{form.as_p}}
-<input type="submit" value="Update">
+    <button type="submit" class="bg-green-500 py-1 w-24 mx-auto text-white rounded-md hover:bg-green-600">Update</button>
 </form>
+{% endblock content %}  {% endcomment %}
+
+
+
+
+{% block content %}
+<div class="flex justify-center">
+  <form action="" method="POST" class="mt-4 border border-gray-300 rounded p-4 w-96">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="mb-4">
+      <label for="{{ field.id_for_label }}" class="block">{{ field.label }}</label>
+      {{ field }}
+    </div>
+    {% endfor %}
+    <button type="submit" class="bg-green-500 py-1 w-24 mx-auto text-white rounded-md hover:bg-green-600">Update</button>
+  </form>
+</div>
+{% endblock content %}
+
