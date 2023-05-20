@@ -1,6 +1,55 @@
 {% extends 'base.html' %}
 {% load custom_tags %}
 
+{% block script %}
+function formatTime(seconds) {
+  var minutes = Math.floor(seconds / 60);
+  var secs = seconds % 60;
+  return minutes.toString().padStart(2, '0') + ':' + secs.toString().padStart(2, '0');
+}
+
+function countdown() {
+  var remainingTimeInput = document.getElementById('remaining-time');
+  var remainingTime = parseInt(remainingTimeInput.value, 10);
+  var timerSpan = document.getElementById('timer');
+
+  // Update the timer display
+  timerSpan.innerHTML = formatTime(remainingTime);
+
+  if (remainingTime <= 0) {
+    // Submit the form when the timer runs out
+    document.getElementById('exam-form').submit();
+  } else {
+    remainingTime--;
+    remainingTimeInput.value = remainingTime;
+    setTimeout(countdown, 1000);
+  }
+}
+
+window.onload = function() {
+  countdown(); // Start the countdown
+
+  // Update the timer display every second
+  setInterval(function() {
+    var timerSpan = document.getElementById('timer');
+    var timeParts = timerSpan.innerHTML.split(':');
+    var minutes = parseInt(timeParts[0], 10);
+    var seconds = parseInt(timeParts[1], 10);
+
+    if (seconds === 0) {
+      if (minutes === 0) {
+        return; // Timer has reached 00:00
+      }
+      minutes--;
+      seconds = 59;
+    } else {
+      seconds--;
+    }
+
+    timerSpan.innerHTML = formatTime(minutes * 60 + seconds);
+  }, 1000);
+};
+{% endblock %}
 
 {% block title %} 
 Exam
@@ -13,8 +62,15 @@ Exam
 <br>
 
 
-<form method="post" action="{% url 'calculate_marks' %}">
+<form id="exam-form" method="post" action="{% url 'calculate_marks' %}">
     {% csrf_token %}
+    <div >
+      Time Remaining: <span id="timer" style="    display: inline-block;
+      padding: 5px 10px;
+      border: 2px solid green;
+      border-radius: 5px;" class="w-20 h-410 bg-gray-300 rounded-lg flex justify-center items-center">10:00</span>
+      <input type="hidden" id="remaining-time" value="600">
+    </div>
     {% for question,count in questions.items %}
       <div>
 

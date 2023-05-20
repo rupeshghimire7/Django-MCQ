@@ -25,6 +25,8 @@
 
     <!-- customizing tailwindcss -->
     <script>
+
+      
       tailwind.config = {
         theme: {
           fontFamily: {
@@ -35,6 +37,8 @@
           },
         },
       };
+
+      {% block script %}  {% endblock %}
     </script>
 
     <title>{% block title %} {% endblock %}</title>
