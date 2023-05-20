@@ -7,7 +7,7 @@ Exam
 {% endblock %}
 
 {% block content %} 
-
+<div class="px-10">
 <h1><b> Exams </b></h1>
 <br>
 <br>
@@ -36,7 +36,10 @@ Exam
         {% endfor %}
       </div>
     {% endfor %}
-    <button type="submit">Submit</button>
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
+      <span class="mr-2">Submit</span>
+      
+    </button>
   </form>
-
+</div>
 {% endblock %}
