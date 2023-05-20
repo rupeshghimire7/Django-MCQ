@@ -6,14 +6,21 @@ Notice
 {% endblock %}
 
 {% block content %}
-
+<div class="px-10">
 <h1>{{notice.title}}</h1>
 <br>
-<p>Created: {{notice.created_at}}  
+<p>
+   <div>
+   Created: {{notice.created_at}}  
+</div>
+
+<div>
    Updated: {{notice.updated_at}}
+</div>
 </p>
 
 <br>
-<br>
+
 {{notice.notice}}
+</div>
 {% endblock %}
