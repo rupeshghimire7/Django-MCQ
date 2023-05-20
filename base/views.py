@@ -6,8 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import json
 import random
-from faker import Faker
-faker = Faker()
+# from faker import Faker
+# faker = Faker()
 
 
 
@@ -162,6 +162,42 @@ def listQuestion(request):
 
 
 
+"""
+Making Paper
+"""
+paper = None
+def Paper():
+    easy = Question.objects.filter(level='E').order_by('?')[:10]
+    medium = Question.objects.filter(level='M').order_by('?')[:5]
+    hard = Question.objects.filter(level='H').order_by('?')[:5]
+
+    allQuestions = easy | medium | hard
+    return allQuestions
+
+
+paper=Paper()
+
+
+"""
+Displaying Question Paper
+"""
+def examquestion(request):
+    user = request.user
+    if user.is_authenticated: # and user.is_student==False
+        allQuestions = {}
+        count = 1
+        for question in paper:
+            allQuestions[question] = count
+            count += 1
+    else:
+        return redirect('studentlogin')
+
+    return render(request,'base/exam.html',{'questions':allQuestions})
+
+
+
+
+
 
 
 """
@@ -173,9 +209,14 @@ def calculate_marks(request):
         questions = Question.objects.all()  
         total_marks = 0
 
+        QnA = {}
+        for question in paper:
+            QnA[question] = request.POST.get('answer{}'.format(question.id))
+
         for question in questions:
             level = question.level
             answer = request.POST.get('answer{}'.format(question.id))
+            
             if level=='E':
                 if answer == question.correct:
                     total_marks += 1
@@ -185,28 +226,9 @@ def calculate_marks(request):
             else:
                 if answer == question.correct:
                     total_marks += 3
-        return render(request, 'base/result.html', {'total_marks': total_marks})
+        return render(request, 'base/result.html', {'total_marks': total_marks,'questions': paper,'QnA':QnA})
     return render(request, 'base/exam.html', {'questions': questions})
 
-
-
-
-
-"""
-Displaying Question Paper
-"""
-def examquestion(request):
-    user = request.user
-    if user.is_authenticated: # and user.is_student==False
-        easy = Question.objects.filter(level='E').order_by('?')[:25]
-        medium = Question.objects.filter(level='M').order_by('?')[:15]
-        hard = Question.objects.filter(level='H').order_by('?')[:10]
-
-        allQuestions = easy | medium | hard
-    else:
-        return redirect('studentlogin')
-
-    return render(request,'base/exam.html',{'questions':allQuestions})
 
 
 
