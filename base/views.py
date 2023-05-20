@@ -258,3 +258,18 @@ def noticeboard(request):
 def notice(request,id):
     notice = NoticeBoard.objects.get(id=id)
     return render(request,'base/notice.html', {'notice':notice})
+
+
+
+
+
+"""
+Result of all students only visible to Teachers
+"""
+def allResult(request):
+    if request.user.is_staff:
+            users = User.objects.filter(is_teacher=False)
+
+    
+    return render(request,'base/resultList.html',{'students':users})
+

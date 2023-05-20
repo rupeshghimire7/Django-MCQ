@@ -7,6 +7,8 @@ class User(AbstractUser):
     email = models.EmailField(unique=True, null=True)
     username = models.CharField(max_length=200, unique=True, null=True)
     bio = models.TextField(null=True,blank=True)
+    marks = models.IntegerField(default=0)
+    is_teacher = models.BooleanField(default=False)
 
 
     USERNAME_FIELD = 'email'
