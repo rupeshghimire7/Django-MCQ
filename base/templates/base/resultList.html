@@ -25,23 +25,27 @@ Results List
 
 
 {% block content %}
+<div class="px-10 py-5">
 <h1>Results List</h1>
 
+<div class="flex justify-center">
+  <div class="border border-gray-300">
+    <table class="w-full">
+      <tr>
+        <th class="border-b border-gray-300 px-4 py-2">Student Name</th>
+        <th class="border-b border-gray-300 px-4 py-2">Marks Obtained</th>
+        <th class="border-b border-gray-300 px-4 py-2">Remarks</th>
+      </tr>
+      {% for student, remarks in students.items %}
+      <tr>
+        <td class="border-b border-gray-300 px-4 py-2">{{ student.name }}</td>
+        <td class="border-b border-gray-300 px-4 py-2">{{ student.marks }}</td>
+        <td class="border-b border-gray-300 px-4 py-2">{{ remarks|get_remarks }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+</div>
 
-    
-<table>
-    <tr>
-        <th>Student Name</th>
-        <th>Marks Obtained</th>
-        <th>Remarks</th>
-    </tr>
-    {% for student,remarks in students.items %}
-    <tr>
-        <td>{{ student.name }}</td>
-        <td>{{ student.marks }}</td>
-        <td>{{ remarks|get_remarks }}</td>
-    </tr>
-</table>
-
-{% endfor %}
 {% endblock %}
