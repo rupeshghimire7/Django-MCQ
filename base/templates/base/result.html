@@ -1,7 +1,26 @@
-Navbar
+
 {% extends 'base.html' %}
 
 {% block content %}
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+<div class="container d-flex justify-content-center">
+   
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="card">
+            <div class="text-right cross"> <i class="fa fa-times"></i> </div>
+            <div class="card-body text-center"> <img src="https://img.icons8.com/bubbles/200/000000/trophy.png" style="display: block; margin: 0 auto;">
+                <h4>CONGRATULATIONS!</h4>
+                <p>Your marks: {{ total_marks }}</p> <button class="btn btn-out btn-square continue">CONTINUE</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% comment %} <h1>Your marks: {{ total_marks }}</h1> {% endcomment %}
+
 <table>
     <tr>
       <th>Question</th>
@@ -21,5 +40,4 @@ Navbar
     {% endfor %}
   </table>
   
-  <p>Total Marks: {{ total_marks }}</p>
 {% endblock %}

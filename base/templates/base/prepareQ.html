@@ -1,47 +1,38 @@
 {% extends 'base.html' %}
-
-
-
+{% load static %}
 {% block title %} 
 Prepare Question
 {% endblock %}
 
 {% block content %} 
+<div class="flex justify-center items-center min-h-screen w-full">
 
-<form method="POST" action="{% url 'prepare' %}">
+<form method="POST" action="{% url 'prepare' %}" class="ml-auto mr-[7.5%] flex flex-col gap-2 w-96 bg-white p-6 rounded-lg shadow-md">
     {% csrf_token %}
     <label>Question:</label>
-    <input class="input-box" name="question" placeholder="Enter Question.">
-    <br>
+    <input class="bg-gray-100 py-1 indent-2 rounded-md" name="question" placeholder="Enter Question.">
 
     {{form.as_p}}
 
     <label>Option 1:</label>
-    <input class="input-box" name="option1" placeholder="ENTER CORRECT ANSWER HERE">
-    <br>
+    <input class="bg-gray-100 py-1 indent-2 rounded-md" name="option1" placeholder="Enter an option">
 
     <label>Option 2:</label>
-    <input class="input-box" name="option2" placeholder="Enter an option">
-    <br>
-
+    <input class="bg-gray-100 py-1 indent-2 rounded-md" name="option2" placeholder="Enter an option">
     <label>Option 3:</label>
-    <input class="input-box" name="option3" placeholder="Enter an option">
-    <br>
+    <input class="bg-gray-100 py-1 indent-2 rounded-md" name="option3" placeholder="Enter an option">
 
     <label>Option 4:</label>
-    <input class="input-box" name="option4" placeholder="Enter an option">
-    <br>
+    <input class="bg-gray-100 py-1 indent-2 rounded-md" name="option4" placeholder="Enter an option">
 
     
-    <br>
 
 
-    <label>Submit:</label>
-    <input type="submit">
-    <br>
+    
+    <button type="submit" class="bg-green-500 py-1 w-24 mx-auto text-white rounded-md hover:bg-green-600">Submit</button>
 
 </form>
-
+</div>
 
 
 

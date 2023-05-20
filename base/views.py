@@ -19,7 +19,7 @@ Authentication Part
 def loginPage(request):
     page = 'login'
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect('homepage')
 
     if request.method == 'POST':
         email = request.POST.get('email').lower()
