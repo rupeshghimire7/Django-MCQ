@@ -148,7 +148,7 @@ def listQuestion(request):
 
 #         correct_form = opt1
 #         option = [opt1, opt2, opt3, opt4]
-#         subject=Subject.objects.get(id=2)
+#         subject=Subject.objects.get(id=3)
 #         print(qn_form,opt1,opt2,opt3,opt4,option,correct_form,subject,level,"/n")
 
 #         q = Question.objects.create(question=qn_form, correct = correct_form, level=level, options = json.dumps(option),subject=subject)
