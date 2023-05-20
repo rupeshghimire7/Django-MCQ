@@ -26,25 +26,31 @@ Subject 2                       Not Available
 
 
 {% block content %}
+<div class="px-10 py-5">
     <h1>All Exams</h1>
         {% if user.is_authenticated %}
-        <table>
+        <div class="flex justify-center">
+            <div class="border border-gray-300">
+        <table class="w-full">
             <tr>
-                <th>Subject</th>
-                <th>Exam Availability</th>
-                <th>Link</th>
+                <th class="border-b border-gray-300 px-4 py-2">Subject</th>
+                <th class="border-b border-gray-300 px-4 py-2">Exam Availability</th>
+                <th class="border-b border-gray-300 px-4 py-2">Link</th>
             </tr>
             {% for subject in subjects %}
             <tr>
-                <td>{{subject.subject}}</td>
-                <td>{{subject.availability|get_availability }}</td>
+                <td class="border-b border-gray-300 px-4 py-2">{{subject.subject}}</td>
+                <td class="border-b border-gray-300 px-4 py-2">{{subject.availability|get_availability }}</td>
                 {% if subject.availability %}
                 <td><a href="{% url 'examquestion' %}">Link</a></td>
                 {% else %}
-                <td>-</td>
+                <td class="border-b border-gray-300 px-4 py-2">-</td>
                 {% endif %}
             </tr>
             {% endfor %}
-        </table
+        </table>
+    </div>
+</div>
+</div>
         {% endif %}
 {% endblock %}
