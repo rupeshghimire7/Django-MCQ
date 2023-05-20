@@ -32,19 +32,19 @@ Subject 2                       Not Available
         <div class="flex justify-center">
             <div class="border border-gray-300">
         <table class="w-full">
-            <tr>
-                <th class="border-b border-gray-300 px-4 py-2">Subject</th>
-                <th class="border-b border-gray-300 px-4 py-2">Exam Availability</th>
-                <th class="border-b border-gray-300 px-4 py-2">Link</th>
+            <tr class="border-b-2 border-gray-300">
+                <th class="border-r-2 border-gray-300 px-4 py-2">Subject</th>
+                <th class="border-r-2 border-gray-300 px-4 py-2">Exam Availability</th>
+                <th class="border-r-2 border-gray-300 px-4 py-2">Link</th>
             </tr>
             {% for subject in subjects %}
-            <tr>
-                <td class="border-b border-gray-300 px-4 py-2">{{subject.subject}}</td>
-                <td class="border-b border-gray-300 px-4 py-2">{{subject.availability|get_availability }}</td>
+            <tr class="border-b-2 border-gray-300">
+                <td class="border-r-2 border-gray-300 px-4 py-2">{{subject.subject}}</td>
+                <td class="border-r-2 border-gray-300 px-4 py-2">{{subject.availability|get_availability }}</td>
                 {% if subject.availability %}
                 <td><a href="{% url 'examquestion' %}">Link</a></td>
                 {% else %}
-                <td class="border-b border-gray-300 px-4 py-2">-</td>
+                <td class="border-r-2 border-gray-300 px-4 py-2">-</td>
                 {% endif %}
             </tr>
             {% endfor %}

@@ -7,12 +7,12 @@ Questionnaire
 
 {% block content %} 
 {% if request.user.is_staff %}
-<div class="px-10"> 
+<div class="px-10 py-10"> 
 
 
         {% for question in questions %}
         <div>
-          <p><b>Q.{{ question.question }}?</b> <span class=""><a href="{% url "update" question.id %}">Update</a> <a href="{% url 'delete' question.id %}">Delete</a></span> </p> 
+          <p><b>Q.{{ question.question }}?</b> <button class="px-10 bg-transparent hover:bg-gray-300 py-2 px-4 rounded"><a href="{% url "update" question.id %}">Update</button><button class="px-5 bg-transparent hover:bg-gray-300 py-2 px-4 rounded" onclick="return confirm('Are you sure you want to delete?')"></a> <a href="{% url 'delete' question.id %}">Delete</a></button> </p> 
           <p><b>Ans.</b>{{ question.correct }}</p>
           {% for option in question.options|get_options %}
             <label>
