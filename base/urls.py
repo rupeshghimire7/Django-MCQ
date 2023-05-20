@@ -28,6 +28,15 @@ urlpatterns = [
     #NoticeBoard
     path('notices/',views.noticeboard,name='notice'),
     path('notice/<int:id>',views.notice,name='noticeX'),
+    path('notice/delete/<int:id>',views.deleteNotice,name='deleteNotice'),
+    path('notice/update/<int:id>',views.updateNotice,name='updateNotice'),
+    
+
+    #Update Delete Question  and Confirm Delete for all questions
+    path('update/<int:id>',views.updateQuestion,name='update'),
+    path('delete/<int:id>',views.deleteQuestion,name='delete'),
+    path('confirmDelete/',views.confirmDelete,name='confirm'),
+    path('deleteall/',views.deleteAll,name='deleteall'),
 
 
 

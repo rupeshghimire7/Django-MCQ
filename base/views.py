@@ -92,11 +92,13 @@ def makeQuestion(request):
             form = QuestionForm(request.POST)
             if form.is_valid():
                 question = form.save(commit=False)
+                qsn = request.POST.get('question')
                 opt1 = request.POST.get('option1')
                 opt2 = request.POST.get('option2')
                 opt3 = request.POST.get('option3')
                 opt4 = request.POST.get('option4')
                 option = [opt1, opt2, opt3, opt4]
+                question.question = qsn
                 question.correct = opt1
                 question.options = json.dumps(option)
                 question.save()
@@ -121,9 +123,12 @@ ALL QUESTIONS
 """
 def listQuestion(request):    
     if request.user.is_staff:
-        questions = Question.objects.all()
+        questions = Question.objects.all().order_by('-created_at')
         jsonDec = json.decoder.JSONDecoder()
-        return render(request,'base/listQ.html',{'questions':questions})
+        condition = len(questions) == 0
+
+
+        return render(request,'base/listQ.html',{'questions':questions,'condition':condition})
     else:
         messages.error(request, 'You cannot Access this page!')
         return  redirect('homepage')
@@ -180,10 +185,16 @@ def checkExam(request):
         for subject in subjects:
             if Question.objects.filter(subject=subject).exists():
                 easycount = Question.objects.filter(subject=subject,level='E').count()
+                print(easycount)
                 mediumcount = Question.objects.filter(subject=subject,level='M').count()
+                print(mediumcount)
                 hardcount = Question.objects.filter(subject=subject,level='H').count()
+                print(hardcount)
                 if easycount>=10 and mediumcount>=5 and hardcount>=5:
                     subject.availability = True
+                    subject.save()
+                else:
+                    subject.availability = False
                     subject.save()
 
         subjects = Subject.objects.all()
@@ -332,5 +343,59 @@ def allResult(request):
 
 
 
+
+
+def deleteQuestion(request,id):
+    if request.user.is_staff:
+        question = Question.objects.get(id=id)
+        question.delete()
+        return redirect('list')
+
+    else:
+        messages.error(request, 'You cannot Access this page!')
+        return  redirect('/')
+    
+
+def updateQuestion(request,id):
+    if request.user.is_staff:
+        question = Question.objects.get(id=id)
+        form = AllQuestionForm(instance=question)
+        if request.method == 'POST':
+            form = AllQuestionForm(request.POST, instance=question)
+            if form.is_valid():
+                form.save()
+                return redirect('list')
+        return render(request,'base/updateQuestion.html',{'form':form})
+    else:
+        messages.error(request, 'You cannot Access this page!')
+        return  redirect('/')
+    
+def confirmDelete(request):
+    if request.user.is_staff:
+        if request.user.is_staff:
+            return render(request,'base/confirmDelete.html')
+    else:
+        messages.error(request, 'You cannot Access this page!')
+        return  redirect('list')
+        
+
+def deleteAll(request):
+    question = Question.objects.all()
+    if request.user.is_staff:    
+        for question in question:
+            question.delete()
+        redirect('list')
+        # return render(request,'base/confirmDelete.)
+    else:
+        messages.error(request, 'You cannot Access this page!')
+        return  redirect('list')
+
+
+
+def deleteNotice(request):
+    pass
+
+def updateNotice(request):
+    pass
 
 

@@ -6,20 +6,30 @@ Questionnaire
 {% endblock %}
 
 {% block content %} 
+{% if request.user.is_staff %}
 <div class="px-10"> 
+
+
         {% for question in questions %}
         <div>
-          <p><b>Q.{{ question.question }}?</b></p>
+          <p><b>Q.{{ question.question }}?</b> <span class=""><a href="{% url "update" question.id %}">Update</a> <a href="{% url 'delete' question.id %}">Delete</a></span> </p> 
           <p><b>Ans.</b>{{ question.correct }}</p>
           {% for option in question.options|get_options %}
             <label>
               <li style="padding-left:25px;">
-              <b>.</b>{{ option }}              <br>
+              {{ option }}              
+              <br>
             </li>
 
             </label>
           {% endfor %}
           <br><hr>
-{% endfor %}
+        {% endfor %}
           </div>
+          {% if condition == True %}
+          <h1 class="text-3xl font-bold">No Question</h1>
+          {% else %}
+          <a href="{% url 'confirm' %}"><h1 class="text-3xl font-bold">Delete All</h1></a>
+          {% endif %}
+{% endif %}
 {% endblock %}

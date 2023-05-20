@@ -58,6 +58,7 @@ class Question(models.Model):
     options = models.TextField(default='options')
     level = models.CharField(max_length=1, default='E', blank=True, choices=level)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, null=True)
+    created_at = models.DateTimeField(auto_now_add=True,null=True,blank=True)
 
     def __str__(self) -> str:
         return self.question[:50]

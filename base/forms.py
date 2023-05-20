@@ -37,3 +37,9 @@ class SubjectForm(forms.ModelForm):
     class Meta:
         model = Subject
         fields = "__all__"
+
+
+class AllQuestionForm(forms.ModelForm):
+    class Meta:
+        model = Question
+        fields = "__all__"
