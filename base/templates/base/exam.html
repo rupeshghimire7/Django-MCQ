@@ -9,18 +9,30 @@ Exam
 {% block content %} 
 
 <h1><b> Exams </b></h1>
+<br>
+<br>
 
 
 <form method="post" action="{% url 'calculate_marks' %}">
     {% csrf_token %}
     {% for question,count in questions.items %}
       <div>
+
+        {% if count == 1 %}
+        <br><h3><b>Easy: 1 marks each</b></h3><br>
+        {% elif count == 11 %}
+        <br><h3><b>Medium: 2 marks each</b></h3><br>   
+        {% elif count == 16 %}
+        <br><h3><b>Hard: 3 marks each</b></h3><br>        
+        {% endif %}
+
         <p><b>Q{{count}} . </b>{{ question.question }}?</p>
         {% for option in question.options|get_options %}
           <label style="padding-left:20px;">
             <input type="radio" name="answer{{ question.id }}" value="{{ option }}">
                  {{ option }}
           </label>
+          <br>
         {% endfor %}
       </div>
     {% endfor %}

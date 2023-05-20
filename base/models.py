@@ -9,6 +9,8 @@ class User(AbstractUser):
     bio = models.TextField(null=True,blank=True)
     marks = models.IntegerField(default=0)
     is_teacher = models.BooleanField(default=False)
+    attempted = models.BooleanField(default=False)
+
 
 
     USERNAME_FIELD = 'email'
@@ -53,7 +55,7 @@ class Question(models.Model):
     question = models.CharField(max_length=500,default="x",blank=False)
     correct = models.CharField(max_length=200,default="x", blank=False)
     options = models.TextField(default='options')
-    level = models.CharField(max_length=1, default='E', blank=False)
+    level = models.CharField(max_length=1, default='E', blank=True, choices=level)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, null=True)
 
     def __str__(self) -> str:

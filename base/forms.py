@@ -30,4 +30,4 @@ class NoticeForm(forms.ModelForm):
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
-        fields = '__all__'
+        fields = ["subject",'level']

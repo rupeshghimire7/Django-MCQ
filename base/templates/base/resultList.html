@@ -1,3 +1,6 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+
 {% comment %} 
 
 Ya chai sabai student ko list hunxa 
@@ -6,14 +9,14 @@ Accessible to student and teachers both
 
 has columns as:
 
-|Student Name   | Marks Obtained |  Grade | Remarks |
-|1. Ram         |     40         |   C    |  Pass   |
+|Student Name   | Marks Obtained | Remarks |
+|1. Ram         |     40         |  Pass   |
 
 
 {% endcomment %}
 
 
-{% extends 'base.html' %}
+
 
 
 {% block title %}
@@ -22,7 +25,23 @@ Results List
 
 
 {% block content %}
-{% for student in students %}
+<h1>Results List</h1>
+
+
+    
+<table>
+    <tr>
+        <th>Student Name</th>
+        <th>Marks Obtained</th>
+        <th>Remarks</th>
+    </tr>
+    {% for student,remarks in students.items %}
+    <tr>
+        <td>{{ student.name }}</td>
+        <td>{{ student.marks }}</td>
+        <td>{{ remarks|get_remarks }}</td>
+    </tr>
+</table>
 
 {% endfor %}
 {% endblock %}

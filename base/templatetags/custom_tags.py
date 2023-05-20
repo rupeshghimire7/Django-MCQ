@@ -28,3 +28,13 @@ def get_level(value):
 def get_subject(value):
     if value==None or value=='':
         return "Minor Project"
+    
+
+@register.filter(name='get_remarks')
+def get_remarks(value):
+    if value==None or value=='':
+        return "No Remarks"
+    else:
+        
+        return value[0]
+        

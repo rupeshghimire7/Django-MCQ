@@ -87,27 +87,30 @@ Preparing Questions
 """
 def makeQuestion(request):
     if request.user.is_staff:
+        form = QuestionForm()
         if request.method == 'POST':
-            qn_form = request.POST.get('question')
-            opt1 = request.POST.get('option1')
-            opt2 = request.POST.get('option2')
-            opt3 = request.POST.get('option3')
-            opt4 = request.POST.get('option4')
-            level = request.POST.get('level')
-            subject = request.POST.get('subject')
-            correct_form = opt1
-            option = [opt1, opt2, opt3, opt4]
+            form = QuestionForm(request.POST)
+            if form.is_valid():
+                question = form.save(commit=False)
+                opt1 = request.POST.get('option1')
+                opt2 = request.POST.get('option2')
+                opt3 = request.POST.get('option3')
+                opt4 = request.POST.get('option4')
+                option = [opt1, opt2, opt3, opt4]
+                question.correct = opt1
+                question.options = json.dumps(option)
+                question.save()
 
-            print(qn_form,opt1,opt2,opt3,opt4,option,correct_form,subject)
+            # print(qn_form,opt1,opt2,opt3,opt4,option,correct_form,subject)
 
-            q = Question.objects.create(question=qn_form, correct = correct_form, level=level, options = json.dumps(option))
-            q.save()
-            return redirect('list')
+            # q = Question.objects.create(question=qn_form, correct = correct, level=level, options = json.dumps(option))
+            # q.save()
+                return redirect('list')
     else:
         messages.error(request, 'You cannot Access this page!')
         return  redirect('homepage')        
 
-    return render(request, 'base/prepareQ.html')
+    return render(request, 'base/prepareQ.html', {'form': form})
 
 
 
@@ -181,12 +184,14 @@ paper=Paper()
 """
 Displaying Question Paper
 """
+@login_required
 def examquestion(request):
     user = request.user
     if user.is_authenticated: # and user.is_student==False
         allQuestions = {}
         count = 1
-        for question in paper:
+        Qpaper = paper.order_by('?')
+        for question in Qpaper:
             allQuestions[question] = count
             count += 1
     else:
@@ -203,6 +208,7 @@ def examquestion(request):
 """
 Marks Calculation
 """
+@login_required
 def calculate_marks(request):
 
     if request.method == 'POST':
@@ -226,6 +232,12 @@ def calculate_marks(request):
             else:
                 if answer == question.correct:
                     total_marks += 3
+
+        user = request.user
+        user.attempted = True
+        user.marks = total_marks
+        user.save()
+
         return render(request, 'base/result.html', {'total_marks': total_marks,'questions': paper,'QnA':QnA})
     return render(request, 'base/exam.html', {'questions': questions})
 
@@ -268,8 +280,23 @@ Result of all students only visible to Teachers
 """
 def allResult(request):
     if request.user.is_staff:
+            data = {}
             users = User.objects.filter(is_teacher=False)
+            for user in users:
+                if user.attempted == False:
+                    remarks = 'Not Attempted'
+                elif user.marks >= 13:
+                    remarks = 'Pass'
+                else:
+                    remarks = 'Fail'
+                data[user] = [remarks]
 
+            print(data)
+            print(users)
+            return render(request,'base/resultList.html',{'students':data})
     
-    return render(request,'base/resultList.html',{'students':users})
+    else:
+        messages.error(request, 'You cannot Access this page!')
+        return  redirect('homepage')
+
 

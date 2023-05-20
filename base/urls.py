@@ -15,6 +15,7 @@ urlpatterns = [
     # path('fakequestion',views.fakequestion,name='fakequestion'),
     path('exam',views.examquestion,name='examquestion'),
     path('calculate-marks/', views.calculate_marks, name='calculate_marks'),
+    path('results/', views.allResult, name='results'),
     path('notices/',views.noticeboard,name='notice'),
     path('notice/<int:id>',views.notice,name='noticeX'),
 
