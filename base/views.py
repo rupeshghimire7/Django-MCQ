@@ -380,16 +380,12 @@ def confirmDelete(request):
         
 
 def deleteAll(request):
-    question = Question.objects.all()
-    if request.user.is_staff:    
-        for question in question:
-            question.delete()
-        redirect('list')
-        # return render(request,'base/confirmDelete.)
+    if request.user.is_staff:
+        Question.objects.all().delete()
+        return redirect('list')
     else:
         messages.error(request, 'You cannot Access this page!')
         return  redirect('list')
-
 
 
 def deleteNotice(request):
