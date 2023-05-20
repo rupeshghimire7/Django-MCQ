@@ -388,10 +388,27 @@ def deleteAll(request):
         return  redirect('list')
 
 
-def deleteNotice(request):
-    pass
+def deleteNotice(request,id):
+    if request.user.is_staff:
+        question = NoticeBoard.objects.get(id=id)
+        question.delete()
+        return redirect('notice')
 
-def updateNotice(request):
-    pass
+
+
+def updateNotice(request,id):
+    if request.user.is_staff:
+        question = NoticeBoard.objects.get(id=id)
+        form = NoticeForm(instance=question)
+        if request.method == 'POST':
+            form = NoticeForm(request.POST, instance=question)
+            if form.is_valid():
+                form.save()
+                return redirect('notice')
+        return render(request,'base/updatenotice.html',{'form':form})
+    else:
+        messages.error(request, 'You cannot Access this page!')
+        return  redirect('/')
+   
 
 
