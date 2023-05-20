@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
-from .models import User,NoticeBoard,Question
+from .models import User,NoticeBoard,Question,Subject
 from django import forms
 
 
@@ -31,3 +31,9 @@ class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
         fields = ["subject",'level']
+
+
+class SubjectForm(forms.ModelForm):
+    class Meta:
+        model = Subject
+        fields = "__all__"

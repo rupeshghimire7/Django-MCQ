@@ -1,3 +1,6 @@
+{% extends 'base.html' %}
+
+
 {% comment %} 
 
 This page has a list all subjects and Availability of examquestion
@@ -14,7 +17,7 @@ Subject 2                       Not Available
 
 
 
-{% extends 'base.html' %}
+
 
 
 {% block title %}
@@ -23,5 +26,28 @@ Subject 2                       Not Available
 
 
 {% block content %}
-
+        {% if user.is_staff %}
+        {{forms.as_p}}
+        {% elif user.is_authenticated %}
+        <table>
+            <tr>
+                <th>Subject</th>
+                <th>Exam Availability</th>
+                <th>Exam Date</th>
+                <th>Link</th>
+            </tr>
+            {% for subject,value in subjects %}
+            <tr>
+                <td>{{subject.subject}}</td>
+                <td>{{subject.availability}}</td>
+                {% if subject.availability %}
+                <td>{{value|get_date}}</td>
+                <td><a href="{% url 'exam' %}">Link</a></td>
+                {% else %}
+                <td>-</td>
+                <td>-</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table
 {% endblock %}

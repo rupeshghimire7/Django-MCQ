@@ -13,6 +13,7 @@ urlpatterns = [
     path('prepQ', views.makeQuestion, name='prepare'),
     path('listQ',views.listQuestion, name='list'),
     # path('fakequestion',views.fakequestion,name='fakequestion'),
+    path('subjects',views.checkExam,name='checkExam'),
     path('exam',views.examquestion,name='examquestion'),
     path('calculate-marks/', views.calculate_marks, name='calculate_marks'),
     path('results/', views.allResult, name='results'),

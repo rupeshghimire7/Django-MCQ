@@ -138,10 +138,10 @@ def listQuestion(request):
 # """
 # def make_100_question():
     
-#     for i in range(100):
-#         qn_form = faker.sentence()
-#         opt1 = faker.word()
-#         opt2 = faker.word()
+    # for i in range(100):
+    #     qn_form = faker.sentence()
+    #     opt1 = faker.word()
+    #     opt2 = faker.word()
 #         opt3 = faker.word()
 #         opt4 = faker.word()
 #         level = random.choice(['E','M','H'])
@@ -161,6 +161,34 @@ def listQuestion(request):
 #     make_100_question()
 #     return redirect('list')
 
+
+
+
+
+
+"""
+Exam Portal : Availability Page
+and
+Subject Adding/Selection
+"""
+def checkExam(request):
+    user = request.user
+    form = None
+    if user.is_authenticated:
+        if user.is_staff:
+            form = SubjectForm()
+            if request.method == 'POST':
+                form = SubjectForm(request.POST)
+                if form.is_valid():
+                    subject = form.save(commit=False)
+                    subject.save()
+                    return redirect('checkExam')
+                
+        subjects = Subject.objects.all()
+        return render(request,'base/checkExams.html',{'subjects':subjects,'form':form,'user':user})
+    
+    else:
+        return redirect('studentlogin')
 
 
 
@@ -298,5 +326,8 @@ def allResult(request):
     else:
         messages.error(request, 'You cannot Access this page!')
         return  redirect('homepage')
+
+
+
 
 
