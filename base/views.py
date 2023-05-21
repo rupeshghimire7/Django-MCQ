@@ -107,7 +107,8 @@ def makeQuestion(request):
 
             # q = Question.objects.create(question=qn_form, correct = correct, level=level, options = json.dumps(option))
             # q.save()
-                return redirect('list')
+                messages.success(request, 'Question Added Successfully!')
+                return redirect('prepare')
     else:
         messages.error(request, 'You cannot Access this page!')
         return  redirect('homepage')        
