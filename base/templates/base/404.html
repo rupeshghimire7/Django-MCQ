@@ -1,0 +1,25 @@
+{% load static %}
+<html>
+<head>
+    <title>Error 404</title>
+    <style>
+        body {
+            background: linear-gradient(0deg, rgba(5, 5, 5, 0.9), rgba(66, 4, 126, 0.1)),
+                url('{% static 'images/error404.png' %}');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>PAGE NOT FOUND</h1>
+        <br>
+        GO TO HOMEPAGE:<a href="{% url 'homepage' %}" class=""><img src="{% static 'images/home.png' %}" style="width: 32px; height: 32px;" alt="Image"></a>
+
+
+
+</div>
+</body>
+</html>

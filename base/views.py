@@ -7,6 +7,10 @@ from django.contrib import messages
 import json
 import random
 from itertools import chain
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+
+
 # from faker import Faker
 # faker = Faker()
 
@@ -48,7 +52,7 @@ def loginPage(request):
     context = {'page': page}
     return render(request, 'base/login_register.html', context)
 
-
+@login_required(login_url='login')
 def logoutUser(request):
     logout(request)
     return redirect('homepage')
@@ -76,6 +80,7 @@ def registerPage(request):
 """
 Landing Page
 """
+
 def home(request):
     user = request.user
     return render(request, 'base/home.html',{'user':user})
@@ -86,6 +91,7 @@ def home(request):
 """
 Preparing Questions
 """
+@login_required(login_url='login')
 def makeQuestion(request):
     if request.user.is_staff:
         form = QuestionForm()
@@ -123,6 +129,7 @@ def makeQuestion(request):
 """
 ALL QUESTIONS
 """
+@login_required(login_url='login')
 def listQuestion(request):    
     if request.user.is_staff:
         questions = Question.objects.all().order_by('-created_at')
@@ -188,6 +195,7 @@ Exam Portal : Availability Page
 and
 Subject Adding/Selection
 """
+@login_required(login_url='login')
 def checkExam(request):
     user = request.user
     if user.is_authenticated:
@@ -241,16 +249,30 @@ Displaying Question Paper
 @login_required
 def examquestion(request):
     user = request.user
-    if user.is_authenticated: # and user.is_student==False
-        allQuestions = {}
-        count = 1
-        easy = paper.filter(level='E').order_by('?')
-        medium = paper.filter(level='M').order_by('?')
-        hard = paper.filter(level='H').order_by('?')
-        Qpaper = chain(easy,medium,hard)
-        for question in Qpaper:
-            allQuestions[question] = count
-            count += 1
+    if user.is_authenticated:
+        if request.session.get('exam_completed'):
+        # Clear the session variable
+            del request.session['exam_completed']
+        # Redirect the user to the homepage
+            return redirect('homepage')
+        print("Attempted: ",user.attempted)
+        if user.attempted == False:
+            allQuestions = {}
+            count = 1
+            easy = paper.filter(level='E').order_by('?')
+            medium = paper.filter(level='M').order_by('?')
+            hard = paper.filter(level='H').order_by('?')
+            Qpaper = chain(easy,medium,hard)
+            for question in Qpaper:
+                allQuestions[question] = count
+                count += 1
+            user.attempted = True
+            user.save()
+            print("Attempted: ",user.attempted)
+            
+        else:
+            messages.error(request, 'You have already attempted the exam!')
+            return redirect('homepage')
     else:
         return redirect('studentlogin')
 
@@ -289,15 +311,21 @@ def calculate_marks(request):
             else:
                 if answer == question.correct:
                     total_marks += 3
-
+                response = render(request, 'base/result.html', {})
         user = request.user
-        user.attempted = True
-        user.marks = total_marks
-        user.save()
+        if user.is_staff:
+            user.attempted = False
+            user.marks = 0
+            user.save()
+        else:
+            user.attempted = True
+            user.marks = total_marks
+            user.save()
+
+
 
         return render(request, 'base/result.html', {'total_marks': total_marks,'questions': paper,'QnA':QnA})
-    return render(request, 'base/exam.html', {'questions': questions})
-
+    return redirect('homepage')
 
 
 
@@ -306,7 +334,7 @@ def calculate_marks(request):
 """
 NoticeBoard and Notice
 """
-
+@login_required
 def noticeboard(request):
     user = request.user
     notices = NoticeBoard.objects.all()
@@ -323,7 +351,7 @@ def noticeboard(request):
     return render(request,'base/notices.html',context)
 
 
-
+@login_required
 def notice(request,id):
     notice = NoticeBoard.objects.get(id=id)
     return render(request,'base/notice.html', {'notice':notice})
@@ -335,6 +363,7 @@ def notice(request,id):
 """
 Result of all students only visible to Teachers
 """
+@login_required
 def allResult(request):
     if request.user.is_staff:
             data = {}
@@ -359,7 +388,7 @@ def allResult(request):
 
 
 
-
+@login_required
 def deleteQuestion(request,id):
     if request.user.is_staff:
         question = Question.objects.get(id=id)
@@ -370,7 +399,7 @@ def deleteQuestion(request,id):
         messages.error(request, 'You cannot Access this page!')
         return  redirect('/')
     
-
+@login_required
 def updateQuestion(request,id):
     if request.user.is_staff:
         question = Question.objects.get(id=id)
@@ -385,6 +414,7 @@ def updateQuestion(request,id):
         messages.error(request, 'You cannot Access this page!')
         return  redirect('/')
     
+@login_required
 def confirmDelete(request):
     if request.user.is_staff:
         if request.user.is_staff:
@@ -393,7 +423,7 @@ def confirmDelete(request):
         messages.error(request, 'You cannot Access this page!')
         return  redirect('list')
         
-
+@login_required
 def deleteAll(request):
     if request.user.is_staff:
         Question.objects.all().delete()
@@ -402,7 +432,7 @@ def deleteAll(request):
         messages.error(request, 'You cannot Access this page!')
         return  redirect('list')
 
-
+@login_required
 def deleteNotice(request,id):
     if request.user.is_staff:
         question = NoticeBoard.objects.get(id=id)
@@ -410,7 +440,7 @@ def deleteNotice(request,id):
         return redirect('notice')
 
 
-
+@login_required
 def updateNotice(request,id):
     if request.user.is_staff:
         question = NoticeBoard.objects.get(id=id)
@@ -426,4 +456,22 @@ def updateNotice(request,id):
         return  redirect('/')
    
 
+@login_required
+def clearAttempts(request):
+    if request.user.is_staff:
+        User.objects.all().attempted = False
+        User.objects.all().marks = 0
+        for user in User.objects.all():
+            user.attempted = False
+            user.marks = 0
+            user.save()
+        return redirect('results')
+    else:
+        messages.error(request, 'You cannot Access this page!')
+        return  redirect('homepage')
+    
 
+
+@login_required
+def error404(request):
+    return render(request, 'base/404.html')

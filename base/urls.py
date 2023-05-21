@@ -1,5 +1,9 @@
-from django.urls import path
+from django.urls import path,re_path
 from . import views
+
+
+# For error 404 page
+
 
 urlpatterns = [
 
@@ -25,6 +29,7 @@ urlpatterns = [
     path('calculate-marks/', views.calculate_marks, name='calculate_marks'),
     path('results/', views.allResult, name='results'),
 
+
     #NoticeBoard
     path('notices/',views.noticeboard,name='notice'),
     path('notice/<int:id>',views.notice,name='noticeX'),
@@ -38,8 +43,10 @@ urlpatterns = [
     path('confirmDelete/',views.confirmDelete,name='confirm'),
     path('deleteall/',views.deleteAll,name='deleteall'),
 
+    #Clear all results and attempts
+    path('clearattempts/',views.clearAttempts,name='clearattempts'),
 
-
+    re_path(r'^.*/$', views.error404, name='error404'),
 
 
 ]

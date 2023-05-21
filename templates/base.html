@@ -64,6 +64,13 @@
           href="{% url 'homepage' %}"
           >MCQ Test Platform for a Class</a
         >
+        <div class="mr-20">
+          <b>
+          {% if request.user.is_authenticated %}
+          {{ request.user.name }}
+          {% endif %}
+          </b>
+        </div>
       </div>
     </nav>
     
