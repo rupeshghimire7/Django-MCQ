@@ -6,11 +6,15 @@ Questionnaire
 {% endblock %}
 
 {% block content %} 
+<div class="bg-green-700 justify-center items-center text-white w-20 font-bold py-2 px-4 rounded flex items-center"><a href="javascript:history.back()"> <- </a></div>
+
 {% if request.user.is_staff %}
 <div class="px-10 py-10"> 
 
-
-        {% for question in questions %}
+          
+        <h1 class="text-3xl font-bold">Easy: {{easycount}} </h1>
+        {% for question in easy %}
+        
         <div>
           <p><b>Q.{{ question.question }}?</b> <button class="px-10 bg-transparent hover:bg-gray-300 py-2 px-4 rounded"><a href="{% url "update" question.id %}">Update</button><button class="px-5 bg-transparent hover:bg-gray-300 py-2 px-4 rounded" onclick="return confirm('Are you sure you want to delete?')"></a> <a href="{% url 'delete' question.id %}">Delete</a></button> </p> 
           <p><b>Ans.</b>{{ question.correct }}</p>
@@ -25,11 +29,54 @@ Questionnaire
           {% endfor %}
           <br><hr>
         {% endfor %}
+
+
+        <h1 class="text-3xl font-bold">Medium: {{mediumcount}} </h1>
+        {% for question in medium %}
+        
+        <div>
+          <p><b>Q.{{ question.question }}?</b> <button class="px-10 bg-transparent hover:bg-gray-300 py-2 px-4 rounded"><a href="{% url "update" question.id %}">Update</button><button class="px-5 bg-transparent hover:bg-gray-300 py-2 px-4 rounded" onclick="return confirm('Are you sure you want to delete?')"></a> <a href="{% url 'delete' question.id %}">Delete</a></button> </p> 
+          <p><b>Ans.</b>{{ question.correct }}</p>
+          {% for option in question.options|get_options %}
+            <label>
+              <li style="padding-left:25px;">
+              {{ option }}              
+              <br>
+            </li>
+
+            </label>
+          {% endfor %}
+          <br><hr>
+        {% endfor %}
+
+
+
+        <h1 class="text-3xl font-bold">Hard: {{hardcount}} </h1>
+        {% for question in hard %}
+        
+        <div>
+          <p><b>Q.{{ question.question }}?</b> <button class="px-10 bg-transparent hover:bg-gray-300 py-2 px-4 rounded"><a href="{% url "update" question.id %}">Update</button><button class="px-5 bg-transparent hover:bg-gray-300 py-2 px-4 rounded" onclick="return confirm('Are you sure you want to delete?')"></a> <a href="{% url 'delete' question.id %}">Delete</a></button> </p> 
+          <p><b>Ans.</b>{{ question.correct }}</p>
+          {% for option in question.options|get_options %}
+            <label>
+              <li style="padding-left:25px;">
+              {{ option }}              
+              <br>
+            </li>
+
+            </label>
+          {% endfor %}
+          <br><hr>
+        {% endfor %}
+
+
           </div>
           {% if condition == True %}
           <h1 class="text-3xl font-bold">No Question</h1>
           {% else %}
           <a href="{% url 'confirm' %}"><h1 class="text-3xl font-bold">Delete All</h1></a>
           {% endif %}
+
 {% endif %}
+
 {% endblock %}

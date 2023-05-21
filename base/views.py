@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import json
 import random
+from itertools import chain
 # from faker import Faker
 # faker = Faker()
 
@@ -125,11 +126,21 @@ ALL QUESTIONS
 def listQuestion(request):    
     if request.user.is_staff:
         questions = Question.objects.all().order_by('-created_at')
-        jsonDec = json.decoder.JSONDecoder()
-        condition = len(questions) == 0
+
+        context = {
+            'easy':questions.filter(level='E'),
+            'medium':questions.filter(level='M'),
+            'hard':questions.filter(level='H'),
+            'easycount': Question.objects.filter(level='E').count(),
+            'mediumcount': Question.objects.filter(level='M').count(),
+            'hardcount': Question.objects.filter(level='H').count(),
+            'condition' : len(questions) == 0
+        }
 
 
-        return render(request,'base/listQ.html',{'questions':questions,'condition':condition})
+
+
+        return render(request,'base/listQ.html',context) 
     else:
         messages.error(request, 'You cannot Access this page!')
         return  redirect('homepage')
@@ -233,7 +244,10 @@ def examquestion(request):
     if user.is_authenticated: # and user.is_student==False
         allQuestions = {}
         count = 1
-        Qpaper = paper.order_by('?')
+        easy = paper.filter(level='E').order_by('?')
+        medium = paper.filter(level='M').order_by('?')
+        hard = paper.filter(level='H').order_by('?')
+        Qpaper = chain(easy,medium,hard)
         for question in Qpaper:
             allQuestions[question] = count
             count += 1

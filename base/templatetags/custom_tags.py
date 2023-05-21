@@ -45,3 +45,25 @@ def get_availability(value):
         return "Available"
     else:
         return "Not Available"
+    
+
+@register.filter(name='get_easy')
+def get_easy(value):
+    print(value)
+    for key,value in value.items():
+        if key=='easycount':
+            return value
+    
+@register.filter(name='get_medium')
+def get_easy(value):
+    print(value)
+    for key,value in value.items():
+        if key=='mediumcount':
+            return value
+        
+@register.filter(name='get_hard')
+def get_easy(value):
+    print(value)
+    for key,value in value.items():
+        if key=='hardcount':
+            return value
