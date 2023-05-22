@@ -16,7 +16,7 @@ NoticeBoard
 		{% for notice in notices %}		
 		<div class="ml-4 mt-4 border border-gray-600 rounded p-4 flex flex-col gap-4 w-96 bg-white p-6 rounded-lg shadow-md">
 			<a href="{% url 'noticeX' notice.id %}" class="hover:pl-0 py-1.5 duration-300 border-l-4 border-l-transparent hover:border-l-blue-800 px-20"> {{notice}} </a>
-			</div
+		</div>
 
 			<button class="bg-transparent hover:bg-gray-300 text-green font-bold py-2 px-4 rounded flex items-center">
 			<span><a href="{% url "updateNotice" notice.id %}">Update</a>
@@ -28,13 +28,10 @@ NoticeBoard
  
 	{% endfor %}
 	{% else %}
-	{% for notice in notices %}		
-
-
-	<div class="ml-10 mt-4 border border-gray-600 rounded p-4 flex flex-col gap-4 w-96 bg-white p-6 rounded-lg shadow-md">
-		<a href="{% url 'noticeX' notice.id %}" class="hover:pl-5 py-1.5 duration-300 border-l-4 border-l-transparent hover:border-l-blue-800 px-20"> {{notice}} </a>
-		</div
-
+		{% for notice in notices %}
+		<div class="ml-4 mt-4 border border-gray-600 rounded p-4 flex flex-col gap-4 w-96 bg-white p-6 rounded-lg shadow-md">
+			<a href="{% url 'noticeX' notice.id %}" class="hover:pl-0 py-1.5 duration-300 border-l-4 border-l-transparent hover:border-l-blue-800 px-20"> {{notice}} </a>
+		</div>
 	{% endfor %}
 	{% endif %}
 

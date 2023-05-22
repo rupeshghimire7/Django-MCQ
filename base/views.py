@@ -200,7 +200,7 @@ def checkExam(request):
     user = request.user
     if user.is_authenticated:
         subjects = Subject.objects.all()
-        print(subjects)
+
         data = {}
         for subject in subjects:
             if Question.objects.filter(subject=subject).exists():
@@ -217,8 +217,9 @@ def checkExam(request):
                     subject.availability = False
                     subject.save()
 
-        subjects = Subject.objects.all()
-        print([subject.availability for subject in subjects])
+
+            return render(request,'base/checkExams.html',{'subjects':subjects,'messages':messages})
+
         return render(request,'base/checkExams.html',{'subjects':subjects})
     
     else:
@@ -321,10 +322,14 @@ def calculate_marks(request):
             user.attempted = True
             user.marks = total_marks
             user.save()
+        if user.marks >= 10:
+            message = "Congratulations! You have passed the exam."
+        else:
+            message = "Sorry! You have failed the exam. Better luck next time."
 
 
 
-        return render(request, 'base/result.html', {'total_marks': total_marks,'questions': paper,'QnA':QnA})
+        return render(request, 'base/result.html', {'total_marks': total_marks,'questions': paper,'QnA':QnA,'message':message})
     return redirect('homepage')
 
 
