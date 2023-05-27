@@ -104,6 +104,10 @@ def makeQuestion(request):
                 opt2 = request.POST.get('option2')
                 opt3 = request.POST.get('option3')
                 opt4 = request.POST.get('option4')
+
+                if opt1 == opt2 or opt1 == opt3 or opt1 == opt4 or opt2 == opt3 or opt2 == opt4 or opt3 == opt4:
+                    messages.error(request, 'Options cannot be same!')
+                    return redirect('prepare')
                 option = [opt1, opt2, opt3, opt4]
                 question.question = qsn
                 question.correct = opt1
